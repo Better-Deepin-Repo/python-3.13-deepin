@@ -8,6 +8,11 @@ unexport CFLAGS CXXFLAGS LDFLAGS CPPFLAGS
 
 export SHELL = /bin/bash
 
+# OBS builds must not run the regression suite.  PGO uses regrtest.py as its
+# profiling workload as well, so disable it to avoid running tests indirectly.
+override DEB_BUILD_OPTIONS += nocheck nopgo
+export DEB_BUILD_OPTIONS
+
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
@@ -552,6 +557,7 @@ define __post_configure
 endef
 
 stamps/stamp-mincheck: stamps/stamp-build-static debian/PVER-minimal.README.Debian.in
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
 ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
 	for m in $(MIN_MODS) $(MIN_PACKAGES) $(MIN_EXTS) $(MIN_BUILTINS); do \
 	  echo "import $$m"; \
@@ -565,6 +571,9 @@ ifeq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
 	else true; fi
 	cd $(buildd_static) && ./python -S ../debian/mincheck.py \
 		minmods.py mindeps.txt
+endif
+else
+	@echo "minimal check disabled for this build"
 endif
 	touch stamps/stamp-mincheck
 
