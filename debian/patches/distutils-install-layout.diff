@@ -92,7 +92,7 @@ Forwarded: not-needed
              # other platforms
 --- a/Lib/pydoc.py
 +++ b/Lib/pydoc.py
-@@ -576,6 +576,7 @@
+@@ -575,6 +575,7 @@
                                   'marshal', 'posix', 'signal', 'sys',
                                   '_thread', 'zipimport') or
               (file.startswith(basedir) and

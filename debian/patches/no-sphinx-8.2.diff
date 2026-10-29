@@ -1,6 +1,6 @@
 --- a/Doc/conf.py
 +++ b/Doc/conf.py
-@@ -96,7 +96,7 @@
+@@ -100,7 +100,7 @@
  
  # Minimum version of sphinx required
  # Keep this version in sync with ``Doc/requirements.txt``.

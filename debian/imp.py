@@ -16,7 +16,7 @@ except ImportError:
     # Platform doesn't support dynamic loading.
     create_dynamic = None
 
-from importlib._bootstrap import _ERR_MSG, _exec, _load, _builtin_from_name
+from importlib._bootstrap import _ERR_MSG_PREFIX, _exec, _load, _builtin_from_name
 from importlib._bootstrap_external import SourcelessFileLoader
 
 from importlib import machinery
@@ -27,6 +27,8 @@ import sys
 import tokenize
 import types
 import warnings
+
+_ERR_MSG = _ERR_MSG_PREFIX + '{!r}'
 
 warnings.warn("the imp module is deprecated in favour of importlib and slated "
               "for removal in Python 3.12; "

@@ -8,7 +8,7 @@ Forwarded: not-needed
 
 --- a/Lib/tempfile.py
 +++ b/Lib/tempfile.py
-@@ -40,7 +40,212 @@ import functools as _functools
+@@ -40,7 +40,218 @@
  import warnings as _warnings
  import io as _io
  import os as _os
@@ -136,7 +136,8 @@ Forwarded: not-needed
 +                         _os.scandir in _os.supports_fd and
 +                         _os.stat in _os.supports_follow_symlinks)
 +
-+    def _rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
++    def _rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None,
++               _onexc_kwargs=False):
 +        """Recursively delete a directory tree.
 +
 +        If dir_fd is not None, it should be a file descriptor open to a directory;
@@ -159,24 +160,29 @@ Forwarded: not-needed
 +
 +        _sys.audit("shutil.rmtree", path, dir_fd)
 +        if ignore_errors:
-+            def onexc(*args):
++            def onexc(*args, **kwargs):
 +                pass
 +        elif onerror is None and onexc is None:
-+            def onexc(*args):
++            def onexc(*args, **kwargs):
 +                raise
 +        elif onexc is None:
 +            if onerror is None:
-+                def onexc(*args):
++                def onexc(*args, **kwargs):
 +                    raise
 +            else:
 +                # delegate to onerror
-+                def onexc(*args):
++                def onexc(*args, **kwargs):
 +                    func, path, exc = args
 +                    if exc is None:
 +                        exc_info = None, None, None
 +                    else:
 +                        exc_info = type(exc), exc, exc.__traceback__
 +                    return onerror(func, path, exc_info)
++        elif not _onexc_kwargs:
++            # Only the internal caller in tempfile asks for the extra arguments.
++            _onexc = onexc
++            def onexc(func, path, err, **kwargs):
++                return _onexc(func, path, err)
 +
 +        if _use_fd_functions:
 +            # While the unsafe rmtree works fine on bytes, the fd based does not.
@@ -221,13 +227,13 @@ Forwarded: not-needed
 +
  import errno as _errno
  from random import Random as _Random
- import sys as _sys
-@@ -933,7 +1138,7 @@ class TemporaryDirectory:
+ import stat as _stat
+@@ -1012,7 +1223,7 @@
                  if not ignore_errors:
                      raise
  
--        _shutil.rmtree(name, onexc=onexc)
-+        _rmtree(name, onexc=onexc)
+-        _shutil.rmtree(name, onexc=onexc, dir_fd=dir_fd, _onexc_kwargs=True)
++        _rmtree(name, onexc=onexc, dir_fd=dir_fd, _onexc_kwargs=True)
  
      @classmethod
      def _cleanup(cls, name, warn_message, ignore_errors=False, delete=True):

@@ -23,7 +23,7 @@ Bug-Upstream: https://github.com/python/cpython/issues/122931
 
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1746,6 +1746,7 @@ Python/dynload_shlib.o: $(srcdir)/Python
+@@ -1751,6 +1751,7 @@
  	$(CC) -c $(PY_CORE_CFLAGS) \
  		$(if $(MULTIARCH),-DMULTIARCH='"$(MULTIARCH)"') \
  		-DSOABI='"$(SOABI)"' \
@@ -38,7 +38,7 @@ Bug-Upstream: https://github.com/python/cpython/issues/122931
 +in their filename, e.g. ``foo.abi3-x86-64-linux-gnu.so``.
 --- a/Python/dynload_shlib.c
 +++ b/Python/dynload_shlib.c
-@@ -43,6 +43,9 @@ const char *_PyImport_DynLoadFiletab[] =
+@@ -43,6 +43,9 @@
      "." ALT_SOABI ".so",
  #endif
      ".abi" PYTHON_ABI_STRING ".so",
@@ -50,7 +50,7 @@ Bug-Upstream: https://github.com/python/cpython/issues/122931
      NULL,
 --- a/Doc/c-api/stable.rst
 +++ b/Doc/c-api/stable.rst
-@@ -113,7 +113,8 @@ On Windows, extensions that use the Stab
+@@ -113,7 +113,8 @@
  ``python39.dll``.
  
  On some platforms, Python will look for and load shared library files named

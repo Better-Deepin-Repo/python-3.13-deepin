@@ -1049,13 +1049,26 @@ reused in custom filters:
     paths (in case the name is absolute
     even after stripping slashes, e.g. ``C:/foo`` on Windows).
     This raises :class:`~tarfile.AbsolutePathError`.
+  - Normalize filenames (:attr:`TarInfo.name`) that contain ``..`` components
+    using :func:`os.path.normpath`.
+    Note that this removes internal ``..`` components, which may change the
+    meaning of the name if it traverses symbolic links.
   - :ref:`Refuse <tarfile-extraction-refuse>` to extract files whose absolute
     path (after following symlinks) would end up outside the destination.
     This raises :class:`~tarfile.OutsideDestinationError`.
+  - :ref:`Refuse <tarfile-extraction-refuse>` to extract links (hard or soft)
+    whose name refers to the destination directory itself.
+    This raises :class:`~tarfile.OutsideDestinationError`.
+    Note that such files are refused even on platforms that do not support
+    symbolic links.
   - Clear high mode bits (setuid, setgid, sticky) and group/other write bits
     (:const:`~stat.S_IWGRP` | :const:`~stat.S_IWOTH`).
 
   Return the modified ``TarInfo`` member.
+
+  .. versionchanged:: 3.13.16
+
+     Filenames containing ``..`` components are now normalized.
 
 .. function:: data_filter(member, path)
 

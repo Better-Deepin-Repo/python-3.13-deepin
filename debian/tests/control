@@ -51,9 +51,10 @@ Restrictions: needs-root, allow-stderr
 
 Tests: module-install-local
 Depends: build-essential,
+  mount,
   python3.13-dev,
   python3-pip,
-  python3-setuptools,
+  python3-setuptools (>= 80),
   shunit2,
 Restrictions: needs-root, allow-stderr
 
@@ -61,7 +62,7 @@ Tests: module-install-user
 Depends: build-essential,
   python3.13-dev,
   python3-pip,
-  python3-setuptools,
+  python3-setuptools (>= 80),
   shunit2
 Restrictions: allow-stderr
 
@@ -69,7 +70,7 @@ Tests: module-install-venv
 Depends: build-essential,
   python3.13-dev,
   python3.13-venv,
-  python3-setuptools-whl (>= 70.1),
+  python3-setuptools-whl (>= 80),
   shunit2
 Restrictions: allow-stderr
 
@@ -78,5 +79,5 @@ Depends: build-essential,
   python3.13-dev,
   shunit2,
   virtualenv,
-  python3-setuptools-whl (>= 70.1)
+  python3-setuptools-whl (>= 80)
 Restrictions: allow-stderr

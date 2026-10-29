@@ -1,3 +1,26 @@
+python3.13 (3.13.18-1) unstable; urgency=medium
+
+  * Python 3.13.18 release.
+    - CVE-2026-87910: tarfile: Honor None result of filter for link fallbacks.
+    - CVE-2026-12345: Fix race condition in the cleanup of TemporaryDirectory.
+    - CVE-2026-115557: Distrust compromised eMudhra intermediate CA keys.
+    - CVE-2026-114583: Reject links replacing the destination in tar_filter.
+    - CVE-2026-19553: Validate SSLContext.wrap_bio() parameters like
+      wrap_socket().
+    - CVE-2026-19445: Use-after-free for server-side SSLContext with sni.
+    - CVE-2026-82049: Fix tarfile `data`/`tar` filter bypass via hard link to
+      a symlink
+    - CVE-2026-15310: Bound zipfile decompression for bzip2/LZMA
+    - CVE-2026-19672: tarfile: handle a member that leaves the destination but
+      comes back.
+    - CVE-2026-17084: Don't consider Unicode codepoint attributes outside RFC
+      3454
+    - CVE-2026-15806: Scope HTTPPasswordMgr credentials by URL scheme
+  * Refresh patches.
+  * Update the module-install-* autopkgtests for setuptools 80.
+
+ -- Stefano Rivera <stefanor@debian.org>  Tue, 27 Oct 2026 18:10:31 +0200
+
 python3.13 (3.13.15-1) unstable; urgency=medium
 
   * Python 3.13.15 release.

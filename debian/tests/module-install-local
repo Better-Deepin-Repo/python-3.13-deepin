@@ -15,7 +15,7 @@ testFibPy() {
 	cd "$AUTOPKGTEST_TMP/packages/fibpy"
 	python3.13 setup.py install
 	assertTrue 'Install fibpy in /usr/local' $?
-	assertTrue 'fibpy was installed to /usr/local' "[ -e $dist_packages/fibpy-*.egg ]"
+	assertTrue 'fibpy was installed to /usr/local' "[ -e $dist_packages/fibpy.py ]"
 	cd "$AUTOPKGTEST_TMP"
 	stdout=$(python3.13 -m fibpy 5)
 	assertTrue 'Execute fibpy from /usr/local' $?
@@ -26,21 +26,10 @@ testFibC() {
 	cd "$AUTOPKGTEST_TMP/packages/fibc"
 	python3.13 setup.py install
 	assertTrue 'Install fibc in /usr/local' $?
-	assertTrue 'fibc was installed to /usr/local' "[ -e $dist_packages/fibc-*.egg ]"
+	assertTrue 'fibc was installed to /usr/local' "[ -e $dist_packages/fibc.*.so ]"
 	cd "$AUTOPKGTEST_TMP"
 	stdout=$(python3.13 -c 'from fibc import fib; print(fib(5))')
 	assertTrue 'Execute fibc from /usr/local' $?
-	assertEquals 'Correct result' 8 "$stdout"
-}
-
-testFibPyDevelop() {
-	cd "$AUTOPKGTEST_TMP/packages/fibpy"
-	python3.13 setup.py develop
-	assertTrue 'Install editable fibpy in /usr/local' $?
-	assertTrue 'fibpy was linked to /usr/local' "[ -e $dist_packages/fibpy.egg-link ]"
-	cd "$AUTOPKGTEST_TMP"
-	stdout=$(python3.13 -m fibpy 5)
-	assertTrue 'Execute editable fibpy from /usr/local' $?
 	assertEquals 'Correct result' 8 "$stdout"
 }
 
